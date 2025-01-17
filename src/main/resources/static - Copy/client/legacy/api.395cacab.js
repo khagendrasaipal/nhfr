@@ -1,0 +1,1 @@
+function n(n,t){return fetch(n,{method:"POST",body:JSON.stringify(t),headers:{"Access-Control-Allow-Origin":"*","Content-Type":"application/json"}}).then((function(n){return n.json()}))}export{n as p};

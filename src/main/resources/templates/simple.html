@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Anusuchi Page</title>
+</head>
+<body>
+   <h6>Health Facility Code: <span th:text="${hfcode}"></span></h6>
+   <h6>Health Facility Name:  <span th:text="${hfname}"></span> </h6>
+    <div>
+        <!-- You can also access other attributes added to the model -->
+        <p>Availabe Services: </p>
+      <ul>
+   <li th:each="service : ${services}">
+            <span th:text="${service['code']}"></span> . <span th:text="${service['name']}"></span>
+        </li>
+
+ </ul> 
+       
+    </div>
+</body>
+</html>

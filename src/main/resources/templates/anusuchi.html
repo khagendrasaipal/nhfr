@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Anusuchi </title>
+
+
+<style>
+h3,h5,h4{
+	text-align:center;
+	margin-top:-10px;
+}
+
+h6{
+	font-weight:bolder;
+	font-size:18px;
+	margin-top:-10px;
+}
+p{
+	font-size:18px;
+}
+
+@media print {
+    .mark-container {
+        margin: 0;
+        border: initial;
+        border-radius: initial;
+        width: initial;
+        min-height: initial;
+        box-shadow: initial;
+        background: initial;
+        page-break-after: always;
+    }
+}
+@page {
+            size: A4;
+            margin: 10px;
+            margin-top:20px;
+        }
+        
+        .mark-container{
+            width: 90%;
+            margin: 0 auto;
+            padding: 20px;
+          
+        }
+</style>
+</head>
+<body>
+<div class="mark-container" style="max-width: 960px">
+ 
+<h3>अनुसूची ३</h3>
+<h5>(दफा १३ उपदफा (१) खण्ड (ग) सँग सम्बन्धित)</h5>
+<h3>स्वास्थ्य संस्था संचालनका लागि प्रदान गरिने इजाजत अनलाईन पत्रको नमूना</h3>
+
+<!--<h4>नेपाल सरकार </h4>
+<h4>स्वास्थ्य तथा जनसंख्या मन्त्रालय  </h4>-->
+<h3>सञ्चालन इजाजतपत्र</h3>
+
+<h6>इजाजत पत्र नं.: <span th:text="${hfcode}"></span></h6>
+<h6>श्री <span th:text="${hfname}"></span> </h6>
+<p>स्वास्थ्य संस्था सञ्चालन गर्न इजाजतको लागि मिति <span th:text="${nepcdate}"></span>  मा प्राप्त भएको निवेदन उपर कारबाही हुँदा त्यस संस्थालाई सेवा सञ्चालन गर्न दिने गरी मिति <span th:text="${appdate}"></span>
+ मा निर्णय भएकोले जनस्वास्थ्य सेवा ऐन, २०७५, जनस्वास्थ्य सेवा नियमावली, २०७७ तथा देहायका शर्तहरुको अधीनमा रही म.न.पा./उ.म.न.पा./नपा/गा.पा. <span th:text="${palika}"></span>
+   वडा नं. <span th:text="${ward}"></span> मा <span th:text="${bed}"></span>  शैया क्षमताको (अस्पताल/स्वास्थ्य संस्था) सञ्चालन गर्न जनस्वास्थ्य सेवा नियमावली, २०७७ को नियम १२ को उपनियम (५) बमोजिम यो इजाजतपत्र दिईएको छ ।</p>
+ 
+ 
+ <p>१. स्वास्थ्य संस्था तथा त्यस्तो संस्थाले प्रदान गर्नुपर्ने सेवाः</p>
+ 
+  <img th:src="${qrCodeUrl}" alt="QR Code">
+  <!--<ul>
+   <li th:each="service : ${services}">
+            <span th:text="${service['code']}"></span> . <span th:text="${service['name']}"></span>
+        </li>
+
+ </ul> -->
+<p>२. इजाजतपत्र कायम रहने अवधिः  <span th:text="${validity}"></span></p>
+
+<p>इजाजतपत्र दिने अधिकारीको : </p>
+<p style="margin-top: -15px;">दस्तखतः</p>
+<p style="margin-top: -15px;">नामः</p>
+<p style="margin-top: -15px;">दर्जाः</p>
+<p style="margin-top: -15px;">मितिः</p>
+
+</div>
+
+
+<div class="mark-container" style="max-width: 960px;margin-top:90px" >
+
+<p>इजाजतपत्रको पछाडिको पृष्ठमा लेखिने</p>
+<p>इजाजतपत्र प्राप्त स्वास्थ्य संस्थाले पालना गर्नुपर्ने शर्तहरुः</p>
+<p>(क) स्वास्थ्य संस्था सञ्चालन गर्दा तोकिएको न्यूनतम मापदण्ड पालना सम्बन्धमा स्वमूल्याङ्कन गरी गुणस्तर सुधार गर्दै जानुपर्ने ।</p>
+<p>(ख) नेपाल सरकारबाट स्वीकृत गरिएको सरकारी कार्यक्रम लागू गर्नु पर्ने ।</p>
+<p>(ग) प्रदेश सरकार अन्तर्गत सञ्चालन हुने भए प्रदेश सरकार र स्थानीय तह अन्तर्गत सञ्चालन हुने भए सम्बन्धित प्रदेश सरकार तथा स्थानीय तहले जारी गरेका नीति तथा कार्यक्रम लागू गर्ने। </p>
+<p>(घ) मन्त्रालयले समय समयमा तोकेको अन्य शर्तहरु पालना गर्नुपर्ने। </p>
+
+
+</div>
+</body>
+</html>
