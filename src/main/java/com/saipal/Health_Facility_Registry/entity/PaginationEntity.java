@@ -12,6 +12,7 @@ public class PaginationEntity {
 	int district;
 	String municipality;
 	String searchKeyword;
+	
 	public String getToken() {
 		return token;
 	}

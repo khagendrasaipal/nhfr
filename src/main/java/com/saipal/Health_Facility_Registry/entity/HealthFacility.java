@@ -36,50 +36,63 @@ public class HealthFacility {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
+	
 	@Column(name = "hf_code")
 	private BigInteger hf_code;
+	
 	@Column(name = "hf_name")
 	@NotBlank(message = "Name is mandatory")
 	private String hf_name;
+	
 //	@Column(name = "type")
 	private Integer type;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "type", insertable = false, updatable = false)
 	@Fetch(FetchMode.JOIN)
 	private HealthFacilityType healthFacilityType;
 
 	
-	
 	@JsonInclude()
 	@Transient
 	private String[] services;
+	
 	@JsonInclude()
 	@Transient
 	private String[] opdServices;
+	
 	@JsonInclude()
 	@Transient
 	private String[] surgicalServices;
+	
 	@JsonInclude()
 	@Transient
 	private String[] radiologyServices;
+	
 	@JsonInclude()
 	@Transient
 	private String[] laboratoryServices;
+	
 	@JsonInclude()
 	@Transient
 	private String[] specializedServices;
+	
 	@JsonInclude()
 	@Transient
 	private String[] ayurvedServices;
+	
 	@JsonInclude()
 	@Transient
 	private String[] familyPlanningServices;
+	
 	@JsonInclude()
 	@Transient
 	private String[] safeMotherhoodServices;
+	
 	@JsonInclude()
 	@Transient
 	private String[] bipannaServices;
+	
 	@JsonInclude()
 	@Transient
 	private String token;
@@ -144,6 +157,7 @@ public class HealthFacility {
 	
 //	@Column(name = "level")
 	private Integer level;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "level", insertable = false, updatable = false)
 	@Fetch(FetchMode.JOIN)
@@ -151,6 +165,7 @@ public class HealthFacility {
 
 	@Column(insertable = false, updatable = false)
 	private Integer oldlevel;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "oldlevel", insertable = false, updatable = false)
 	@Fetch(FetchMode.JOIN)
@@ -165,26 +180,31 @@ public class HealthFacility {
 	
 	@Column(name = "sectioned")
 	private Integer sectioned;
+	
 	@Column(name = "functional")
 	private Integer functional;
 	
 	@Column(name = "icu_sectioned")
 	private Integer icu_sectioned;
+	
 	@Column(name = "icu_functional")
 	private Integer icu_functional;
 	
 	@Column(name = "ventilator_sectioned")
 	private Integer ventilator_sectioned;
+	
 	@Column(name = "ventilator_functional")
 	private Integer ventilator_functional;
 	
 	@Column(name = "hdu_sectioned")
 	private Integer hdu_sectioned;
+	
 	@Column(name = "hdu_functional")
 	private Integer hdu_functional;
 	
 	@Column(name = "nicu_sectioned")
 	private Integer nicu_sectioned;
+	
 	@Column(name = "nicu_functional")
 	private Integer nicu_functional;
 	
@@ -275,28 +295,39 @@ public class HealthFacility {
 	
 	@Column(name = "ward")
 	private Integer ward;
+	
 	@Column(name = "opstatus")
 	private String opstatus;
+	
 	@Column(name = "latitude")
 	private String latitude;
+	
 	@Column(name = "longitude")
 	private String longitude;
+	
 	@Column(name = "estd_date")
 	private String estd_date;
+	
 	@Column(name = "email")
 	private String email;
+	
 	@Column(name = "website")
 	private String website;
+	
 	@Column(name = "telephone")
 	private String telephone;
+	
 	@Column(name = "ren_date")
 	private String ren_date;
 //	@Column(name = "ftype")
+	
 //	private Integer ftype;
 	@Column(name = "validity")
 	private String validity;
+	
 	@Column(name = "ucode")
 	private Integer ucode;
+	
 	@Column(name = "cbscode")
 	private Integer cbscode;
 	

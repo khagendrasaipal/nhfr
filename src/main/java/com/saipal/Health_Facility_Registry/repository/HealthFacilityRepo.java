@@ -4,6 +4,7 @@ package com.saipal.Health_Facility_Registry.repository;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -857,7 +858,9 @@ public interface HealthFacilityRepo extends PagingAndSortingRepository<HealthFac
 
 		   @Query(value="SELECT p.* FROM hfregistry p LEFT JOIN health_facility_type n ON p.type = n.id LEFT JOIN ownership o ON p.ownership=o.id  LEFT JOIN facility_level l ON p.level=l.id LEFT JOIN facility_level fl ON p.oldlevel=fl.id WHERE   p.id in(select hf_id from hf_radiology where radiology_id=?1) and  p.soft_delete=0",nativeQuery=true)
 		List<HealthFacility> getFacilityByNationalServiceradio(int service, String tab, String col);
-
+		 
+		   @Query(value="select id,hf_name FROM hfregistry WHERE province = ?1",countQuery = "SELECT count(*) FROM hfregistry WHERE province = ?1",nativeQuery=true)
+			Page<Object[]> findAllbyprovince(int province, Pageable pageable);
 		  
 
 		   @Query(value="SELECT p.* FROM hfregistry p LEFT JOIN health_facility_type n ON p.type = n.id LEFT JOIN ownership o ON p.ownership=o.id  LEFT JOIN facility_level l ON p.level=l.id LEFT JOIN facility_level fl ON p.oldlevel=fl.id WHERE  p.id in(select hf_id from hf_surgical where surgical_id=?1) and  p.soft_delete=0",nativeQuery=true)
@@ -869,7 +872,212 @@ public interface HealthFacilityRepo extends PagingAndSortingRepository<HealthFac
 		   @Query(value="SELECT p.* FROM hfregistry p LEFT JOIN health_facility_type n ON p.type = n.id LEFT JOIN ownership o ON p.ownership=o.id  LEFT JOIN facility_level l ON p.level=l.id LEFT JOIN facility_level fl ON p.oldlevel=fl.id WHERE  p.id in(select hf_id from hf_ayurved where ayur_id=?1) and  p.soft_delete=0",nativeQuery=true)
 		List<HealthFacility> getFacilityByNationalServiceAyurved(int service, String tab, String col);
 
+
+//		@Query(value="Select hf_name as name , website as href,  id  as uuid,  hf_code  as hfCode,  latitude ,  longitude ,  type ,  authlevel ,  level ,  oldlevel ,  ownership ,"
+//				+ "  ftype ,  opstatus ,  internet ,  ren_date ,  sectioned ,  functional ,  icu_sectioned ,  icu_functional ,  ventilator_sectioned ,  ventilator_functional ,  province,p.nameen as provincename , "
+//				+ " district ,  municipality ,  ward ,  estd_date ,  validity ,  email ,  telephone ,  source ,  hmis_code ,  created_at ,  ucode ,  cbscode ,  newcode ,  district_code , "
+//				+ " datecount ,  services ,  soft_delete ,  created_date ,  c_hf_name ,  health_services ,  oxygen ,  ambulance ,  concentrator ,  cylinder ,  ehs ,  geriatrics ,  insurance , "
+//				+ " ocmc ,  pharmacy ,  plant_capacity ,  ssu ,  contact_person ,  contact_person_mobile ,  ambulance_category ,  ambulance_contact ,  hdu_functional ,  hdu_sectioned , "
+//				+ " nicu_functional ,  nicu_sectioned ,  org_source ,  building_cost ,  device_cost ,  est_income ,  loan_org ,  other_source ,  property_source ,  workforce_cost ,"
+//				+ "  deviceitems ,  owneritems ,  onlinestatus ,  approvedate ,  approveby ,  building_maps ,  hf_details ,  iee_certs ,  mem_citizenships ,  org_articles ,  org_perms , "
+//				+ " reg_orgs ,  service_fees ,  tax_clears ,  vat_pans ,  submitto ,  hcode ,  rtype  from  hfregistry join admin_province p on p.pid=hfregistry.province",countQuery = "SELECT count(*) FROM hfregistry" , nativeQuery = true)
+//		
+		   @Query(value = 
+				   "SELECT hf.hf_name AS name, hf.website AS href, hf.id AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
+				   + " DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS created_at,DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS updated_at, hf.latitude, hf.longitude, hf.hmis_code AS iid, hf.source AS agency, hf.hf_code AS hfCode,hf.type, "
+				    + "health_facility_type.id AS hftype_id, health_facility_type.code AS hftype_code, health_facility_type.type_name AS hftype_name, "
+				    + "  hf.authlevel,"
+		            + "hf.ftype AS ftype, hf.opstatus, "
+		            + "hf.internet, hf.ren_date, hf.sectioned, hf.functional, hf.icu_sectioned, hf.icu_functional, hf.ventilator_sectioned, hf.ventilator_functional, "
+		            + "admin_province.pid AS province_id, admin_province.nameen AS province_name, "
+		            + "admin_district.districtid AS district_id, admin_district.nameen AS district_name, admin_local_level_structure.vcid AS municipality_id, admin_local_level_structure.nameen AS municipality_name, "
+		            + "hf.ward, hf.estd_date, hf.validity, hf.email, hf.telephone, "
+		            + " hf.oxygen, hf.ambulance, "
+		            + "hf.concentrator, hf.cylinder, hf.ehs, hf.geriatrics, hf.insurance, hf.ocmc, hf.pharmacy, hf.plant_capacity, hf.ssu, hf.contact_person, hf.contact_person_mobile, "
+		            + "hf.ambulance_category, hf.ambulance_contact, hf.hdu_functional, hf.hdu_sectioned, hf.nicu_functional, hf.nicu_sectioned, hf.org_source, hf.building_cost, hf.device_cost, "
+		            + "hf.est_income, hf.loan_org, hf.other_source, hf.property_source, hf.workforce_cost,DATE_FORMAT(hf.approvedate, '%Y-%m-%d') AS approved_date , hf.approveby, "
+		            + "service_type.id AS ftype_id, service_type.code AS ftype_code, service_type.name AS ftype_name, service_type.status AS ftype_status, "
+		            + " hf.ownership, ownership.id AS ownership_id, ownership.name AS ownership_name, ownership.code AS ownership_code, ownership.status AS ownership_status, "
+		            + "hf.level,facility_level.id AS facility_level_id, facility_level.code AS facility_level_code, facility_level.nameen AS facility_level_name, facility_level.status AS facility_level_status, "
+		            + "facility_level.parent AS facility_level_parent, facility_level.types AS facility_level_types, hf.oldlevel,hf.hcode, hf.rtype,  "
+		            + "hf.building_maps, hf.hf_details, hf.iee_certs, hf.mem_citizenships, hf.org_articles, hf.org_perms, hf.reg_orgs, hf.service_fees, hf.tax_clears, hf.vat_pans "
+		            + "FROM hfregistry hf "
+		            + "JOIN admin_province ON admin_province.pid = hf.province "
+		            + "LEFT JOIN service_type ON service_type.id = hf.ftype "
+		            + "LEFT JOIN ownership ON ownership.id = hf.ownership "
+		            + "LEFT JOIN facility_level ON facility_level.id = hf.level "
+		            + "JOIN admin_district ON admin_district.districtid = hf.district "
+		            + "JOIN admin_local_level_structure ON admin_local_level_structure.vcid = hf.municipality "
+		            + "LEFT JOIN health_facility_type ON health_facility_type.id = hf.type "
+		            + "WHERE hf.soft_delete = 0"
+		   			,
+		   				countQuery = "SELECT count(*) FROM hfregistry where soft_delete=0", nativeQuery = true)
+		Page<Object[]> findallFacilities(Pageable pageable);
+		
+		 @Query(value = 
+				   "SELECT hf.hf_name AS name, hf.website AS href, hf.id AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
+				   + " DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS created_at,DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS updated_at, hf.latitude, hf.longitude, hf.hmis_code AS iid, hf.source AS agency, hf.hf_code AS hfCode,hf.type, "
+				    + "health_facility_type.id AS hftype_id, health_facility_type.code AS hftype_code, health_facility_type.type_name AS hftype_name, "
+				    + "  hf.authlevel,"
+		            + "hf.ftype AS ftype, hf.opstatus, "
+		            + "hf.internet, hf.ren_date, hf.sectioned, hf.functional, hf.icu_sectioned, hf.icu_functional, hf.ventilator_sectioned, hf.ventilator_functional, "
+		            + "admin_province.pid AS province_id, admin_province.nameen AS province_name, "
+		            + "admin_district.districtid AS district_id, admin_district.nameen AS district_name, admin_local_level_structure.vcid AS municipality_id, admin_local_level_structure.nameen AS municipality_name, "
+		            + "hf.ward, hf.estd_date, hf.validity, hf.email, hf.telephone, "
+		            + " hf.oxygen, hf.ambulance, "
+		            + "hf.concentrator, hf.cylinder, hf.ehs, hf.geriatrics, hf.insurance, hf.ocmc, hf.pharmacy, hf.plant_capacity, hf.ssu, hf.contact_person, hf.contact_person_mobile, "
+		            + "hf.ambulance_category, hf.ambulance_contact, hf.hdu_functional, hf.hdu_sectioned, hf.nicu_functional, hf.nicu_sectioned, hf.org_source, hf.building_cost, hf.device_cost, "
+		            + "hf.est_income, hf.loan_org, hf.other_source, hf.property_source, hf.workforce_cost,DATE_FORMAT(hf.approvedate, '%Y-%m-%d') AS approved_date , hf.approveby, "
+		            + "service_type.id AS ftype_id, service_type.code AS ftype_code, service_type.name AS ftype_name, service_type.status AS ftype_status, "
+		            + " hf.ownership, ownership.id AS ownership_id, ownership.name AS ownership_name, ownership.code AS ownership_code, ownership.status AS ownership_status, "
+		            + "hf.level,facility_level.id AS facility_level_id, facility_level.code AS facility_level_code, facility_level.nameen AS facility_level_name, facility_level.status AS facility_level_status, "
+		            + "facility_level.parent AS facility_level_parent, facility_level.types AS facility_level_types, hf.oldlevel,hf.hcode, hf.rtype,  "
+		            + "hf.building_maps, hf.hf_details, hf.iee_certs, hf.mem_citizenships, hf.org_articles, hf.org_perms, hf.reg_orgs, hf.service_fees, hf.tax_clears, hf.vat_pans "
+		            + "FROM hfregistry hf "
+		            + "JOIN admin_province ON admin_province.pid = hf.province "
+		            + "LEFT JOIN service_type ON service_type.id = hf.ftype "
+		            + "LEFT JOIN ownership ON ownership.id = hf.ownership "
+		            + "LEFT JOIN facility_level ON facility_level.id = hf.level "
+		            + "JOIN admin_district ON admin_district.districtid = hf.district "
+		            + "JOIN admin_local_level_structure ON admin_local_level_structure.vcid = hf.municipality "
+		            + "LEFT JOIN health_facility_type ON health_facility_type.id = hf.type "
+		            + "WHERE hf.soft_delete = 0 and hf.hf_code= ?1"
+		   			,
+		   				countQuery = "SELECT count(*) FROM hfregistry where soft_delete=0 and hf_code= ?1", nativeQuery = true)
+		Page<Object[]> findHfByCodes(BigInteger code,Pageable pageable);
+
+		 @Query(value = 
+				   "SELECT hf.hf_name AS name, hf.website AS href, hf.id AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
+				   + " DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS created_at,DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS updated_at, hf.latitude, hf.longitude, hf.hmis_code AS iid, hf.source AS agency, hf.hf_code AS hfCode,hf.type, "
+				    + "health_facility_type.id AS hftype_id, health_facility_type.code AS hftype_code, health_facility_type.type_name AS hftype_name, "
+				    + "  hf.authlevel,"
+		            + "hf.ftype AS ftype, hf.opstatus, "
+		            + "hf.internet, hf.ren_date, hf.sectioned, hf.functional, hf.icu_sectioned, hf.icu_functional, hf.ventilator_sectioned, hf.ventilator_functional, "
+		            + "admin_province.pid AS province_id, admin_province.nameen AS province_name, "
+		            + "admin_district.districtid AS district_id, admin_district.nameen AS district_name, admin_local_level_structure.vcid AS municipality_id, admin_local_level_structure.nameen AS municipality_name, "
+		            + "hf.ward, hf.estd_date, hf.validity, hf.email, hf.telephone, "
+		            + " hf.oxygen, hf.ambulance, "
+		            + "hf.concentrator, hf.cylinder, hf.ehs, hf.geriatrics, hf.insurance, hf.ocmc, hf.pharmacy, hf.plant_capacity, hf.ssu, hf.contact_person, hf.contact_person_mobile, "
+		            + "hf.ambulance_category, hf.ambulance_contact, hf.hdu_functional, hf.hdu_sectioned, hf.nicu_functional, hf.nicu_sectioned, hf.org_source, hf.building_cost, hf.device_cost, "
+		            + "hf.est_income, hf.loan_org, hf.other_source, hf.property_source, hf.workforce_cost,DATE_FORMAT(hf.approvedate, '%Y-%m-%d') AS approved_date , hf.approveby, "
+		            + "service_type.id AS ftype_id, service_type.code AS ftype_code, service_type.name AS ftype_name, service_type.status AS ftype_status, "
+		            + " hf.ownership, ownership.id AS ownership_id, ownership.name AS ownership_name, ownership.code AS ownership_code, ownership.status AS ownership_status, "
+		            + "hf.level,facility_level.id AS facility_level_id, facility_level.code AS facility_level_code, facility_level.nameen AS facility_level_name, facility_level.status AS facility_level_status, "
+		            + "facility_level.parent AS facility_level_parent, facility_level.types AS facility_level_types, hf.oldlevel,hf.hcode, hf.rtype,  "
+		            + "hf.building_maps, hf.hf_details, hf.iee_certs, hf.mem_citizenships, hf.org_articles, hf.org_perms, hf.reg_orgs, hf.service_fees, hf.tax_clears, hf.vat_pans "
+		            + "FROM hfregistry hf "
+		            + "JOIN admin_province ON admin_province.pid = hf.province "
+		            + "LEFT JOIN service_type ON service_type.id = hf.ftype "
+		            + "LEFT JOIN ownership ON ownership.id = hf.ownership "
+		            + "LEFT JOIN facility_level ON facility_level.id = hf.level "
+		            + "JOIN admin_district ON admin_district.districtid = hf.district "
+		            + "JOIN admin_local_level_structure ON admin_local_level_structure.vcid = hf.municipality "
+		            + "LEFT JOIN health_facility_type ON health_facility_type.id = hf.type "
+		            + "WHERE hf.soft_delete = 0 and hf.province= ?1"
+		   			,
+		   				countQuery = "SELECT count(*) FROM hfregistry where soft_delete=0 and province=?1", nativeQuery = true)
+		 Page<Object[]>  findHfByProvince(int province, Pageable pageable);
+		
+		
+		 @Query(value = 
+				   "SELECT hf.hf_name AS name, hf.website AS href, hf.id AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
+				   + " DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS created_at,DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS updated_at, hf.latitude, hf.longitude, hf.hmis_code AS iid, hf.source AS agency, hf.hf_code AS hfCode,hf.type, "
+				    + "health_facility_type.id AS hftype_id, health_facility_type.code AS hftype_code, health_facility_type.type_name AS hftype_name, "
+				    + "  hf.authlevel,"
+		            + "hf.ftype AS ftype, hf.opstatus, "
+		            + "hf.internet, hf.ren_date, hf.sectioned, hf.functional, hf.icu_sectioned, hf.icu_functional, hf.ventilator_sectioned, hf.ventilator_functional, "
+		            + "admin_province.pid AS province_id, admin_province.nameen AS province_name, "
+		            + "admin_district.districtid AS district_id, admin_district.nameen AS district_name, admin_local_level_structure.vcid AS municipality_id, admin_local_level_structure.nameen AS municipality_name, "
+		            + "hf.ward, hf.estd_date, hf.validity, hf.email, hf.telephone, "
+		            + " hf.oxygen, hf.ambulance, "
+		            + "hf.concentrator, hf.cylinder, hf.ehs, hf.geriatrics, hf.insurance, hf.ocmc, hf.pharmacy, hf.plant_capacity, hf.ssu, hf.contact_person, hf.contact_person_mobile, "
+		            + "hf.ambulance_category, hf.ambulance_contact, hf.hdu_functional, hf.hdu_sectioned, hf.nicu_functional, hf.nicu_sectioned, hf.org_source, hf.building_cost, hf.device_cost, "
+		            + "hf.est_income, hf.loan_org, hf.other_source, hf.property_source, hf.workforce_cost,DATE_FORMAT(hf.approvedate, '%Y-%m-%d') AS approved_date , hf.approveby, "
+		            + "service_type.id AS ftype_id, service_type.code AS ftype_code, service_type.name AS ftype_name, service_type.status AS ftype_status, "
+		            + " hf.ownership, ownership.id AS ownership_id, ownership.name AS ownership_name, ownership.code AS ownership_code, ownership.status AS ownership_status, "
+		            + "hf.level,facility_level.id AS facility_level_id, facility_level.code AS facility_level_code, facility_level.nameen AS facility_level_name, facility_level.status AS facility_level_status, "
+		            + "facility_level.parent AS facility_level_parent, facility_level.types AS facility_level_types, hf.oldlevel,hf.hcode, hf.rtype,  "
+		            + "hf.building_maps, hf.hf_details, hf.iee_certs, hf.mem_citizenships, hf.org_articles, hf.org_perms, hf.reg_orgs, hf.service_fees, hf.tax_clears, hf.vat_pans "
+		            + "FROM hfregistry hf "
+		            + "JOIN admin_province ON admin_province.pid = hf.province "
+		            + "LEFT JOIN service_type ON service_type.id = hf.ftype "
+		            + "LEFT JOIN ownership ON ownership.id = hf.ownership "
+		            + "LEFT JOIN facility_level ON facility_level.id = hf.level "
+		            + "JOIN admin_district ON admin_district.districtid = hf.district "
+		            + "JOIN admin_local_level_structure ON admin_local_level_structure.vcid = hf.municipality "
+		            + "LEFT JOIN health_facility_type ON health_facility_type.id = hf.type "
+		            + "WHERE hf.soft_delete = 0 and hf.district= ?1"
+		   			,
+		   				countQuery = "SELECT count(*) FROM hfregistry where soft_delete=0 and district=?1", nativeQuery = true)
+		 Page<Object[]> findHfByDistrict(int district, Pageable pageable);
+		
+		 @Query(value = 
+				   "SELECT hf.hf_name AS name, hf.website AS href, hf.id AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
+				   + " DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS created_at,DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS updated_at, hf.latitude, hf.longitude, hf.hmis_code AS iid, hf.source AS agency, hf.hf_code AS hfCode,hf.type, "
+				    + "health_facility_type.id AS hftype_id, health_facility_type.code AS hftype_code, health_facility_type.type_name AS hftype_name, "
+				    + "  hf.authlevel,"
+		            + "hf.ftype AS ftype, hf.opstatus, "
+		            + "hf.internet, hf.ren_date, hf.sectioned, hf.functional, hf.icu_sectioned, hf.icu_functional, hf.ventilator_sectioned, hf.ventilator_functional, "
+		            + "admin_province.pid AS province_id, admin_province.nameen AS province_name, "
+		            + "admin_district.districtid AS district_id, admin_district.nameen AS district_name, admin_local_level_structure.vcid AS municipality_id, admin_local_level_structure.nameen AS municipality_name, "
+		            + "hf.ward, hf.estd_date, hf.validity, hf.email, hf.telephone, "
+		            + " hf.oxygen, hf.ambulance, "
+		            + "hf.concentrator, hf.cylinder, hf.ehs, hf.geriatrics, hf.insurance, hf.ocmc, hf.pharmacy, hf.plant_capacity, hf.ssu, hf.contact_person, hf.contact_person_mobile, "
+		            + "hf.ambulance_category, hf.ambulance_contact, hf.hdu_functional, hf.hdu_sectioned, hf.nicu_functional, hf.nicu_sectioned, hf.org_source, hf.building_cost, hf.device_cost, "
+		            + "hf.est_income, hf.loan_org, hf.other_source, hf.property_source, hf.workforce_cost,DATE_FORMAT(hf.approvedate, '%Y-%m-%d') AS approved_date , hf.approveby, "
+		            + "service_type.id AS ftype_id, service_type.code AS ftype_code, service_type.name AS ftype_name, service_type.status AS ftype_status, "
+		            + " hf.ownership, ownership.id AS ownership_id, ownership.name AS ownership_name, ownership.code AS ownership_code, ownership.status AS ownership_status, "
+		            + "hf.level,facility_level.id AS facility_level_id, facility_level.code AS facility_level_code, facility_level.nameen AS facility_level_name, facility_level.status AS facility_level_status, "
+		            + "facility_level.parent AS facility_level_parent, facility_level.types AS facility_level_types, hf.oldlevel,hf.hcode, hf.rtype,  "
+		            + "hf.building_maps, hf.hf_details, hf.iee_certs, hf.mem_citizenships, hf.org_articles, hf.org_perms, hf.reg_orgs, hf.service_fees, hf.tax_clears, hf.vat_pans "
+		            + "FROM hfregistry hf "
+		            + "JOIN admin_province ON admin_province.pid = hf.province "
+		            + "LEFT JOIN service_type ON service_type.id = hf.ftype "
+		            + "LEFT JOIN ownership ON ownership.id = hf.ownership "
+		            + "LEFT JOIN facility_level ON facility_level.id = hf.level "
+		            + "JOIN admin_district ON admin_district.districtid = hf.district "
+		            + "JOIN admin_local_level_structure ON admin_local_level_structure.vcid = hf.municipality "
+		            + "LEFT JOIN health_facility_type ON health_facility_type.id = hf.type "
+		            + "WHERE hf.soft_delete = 0 and hf.municipality= ?1"
+		   			,
+		   				countQuery = "SELECT count(*) FROM hfregistry where soft_delete=0 and municipality=?1", nativeQuery = true)
+		Page<Object[]> findHfByPalika(String municipality, Pageable pageable);
+		
+		 @Query(value = 
+				   "SELECT hf.hf_name AS name, hf.website AS href, hf.id AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
+				   + " DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS created_at,DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS updated_at, hf.latitude, hf.longitude, hf.hmis_code AS iid, hf.source AS agency, hf.hf_code AS hfCode,hf.type, "
+				    + "health_facility_type.id AS hftype_id, health_facility_type.code AS hftype_code, health_facility_type.type_name AS hftype_name, "
+				    + "  hf.authlevel,"
+		            + "hf.ftype AS ftype, hf.opstatus, "
+		            + "hf.internet, hf.ren_date, hf.sectioned, hf.functional, hf.icu_sectioned, hf.icu_functional, hf.ventilator_sectioned, hf.ventilator_functional, "
+		            + "admin_province.pid AS province_id, admin_province.nameen AS province_name, "
+		            + "admin_district.districtid AS district_id, admin_district.nameen AS district_name, admin_local_level_structure.vcid AS municipality_id, admin_local_level_structure.nameen AS municipality_name, "
+		            + "hf.ward, hf.estd_date, hf.validity, hf.email, hf.telephone, "
+		            + " hf.oxygen, hf.ambulance, "
+		            + "hf.concentrator, hf.cylinder, hf.ehs, hf.geriatrics, hf.insurance, hf.ocmc, hf.pharmacy, hf.plant_capacity, hf.ssu, hf.contact_person, hf.contact_person_mobile, "
+		            + "hf.ambulance_category, hf.ambulance_contact, hf.hdu_functional, hf.hdu_sectioned, hf.nicu_functional, hf.nicu_sectioned, hf.org_source, hf.building_cost, hf.device_cost, "
+		            + "hf.est_income, hf.loan_org, hf.other_source, hf.property_source, hf.workforce_cost,DATE_FORMAT(hf.approvedate, '%Y-%m-%d') AS approved_date , hf.approveby, "
+		            + "service_type.id AS ftype_id, service_type.code AS ftype_code, service_type.name AS ftype_name, service_type.status AS ftype_status, "
+		            + " hf.ownership, ownership.id AS ownership_id, ownership.name AS ownership_name, ownership.code AS ownership_code, ownership.status AS ownership_status, "
+		            + "hf.level,facility_level.id AS facility_level_id, facility_level.code AS facility_level_code, facility_level.nameen AS facility_level_name, facility_level.status AS facility_level_status, "
+		            + "facility_level.parent AS facility_level_parent, facility_level.types AS facility_level_types, hf.oldlevel,hf.hcode, hf.rtype,  "
+		            + "hf.building_maps, hf.hf_details, hf.iee_certs, hf.mem_citizenships, hf.org_articles, hf.org_perms, hf.reg_orgs, hf.service_fees, hf.tax_clears, hf.vat_pans "
+		            + "FROM hfregistry hf "
+		            + "JOIN admin_province ON admin_province.pid = hf.province "
+		            + "LEFT JOIN service_type ON service_type.id = hf.ftype "
+		            + "LEFT JOIN ownership ON ownership.id = hf.ownership "
+		            + "LEFT JOIN facility_level ON facility_level.id = hf.level "
+		            + "JOIN admin_district ON admin_district.districtid = hf.district "
+		            + "JOIN admin_local_level_structure ON admin_local_level_structure.vcid = hf.municipality "
+		            + "LEFT JOIN health_facility_type ON health_facility_type.id = hf.type "
+		            + "WHERE hf.soft_delete = 0 and  hf.hf_name LIKE %?1% OR hf_code LIKE %?1%"
+		   			,
+		   				countQuery = "SELECT count(*) FROM hfregistry where soft_delete=0 and hf_name LIKE %?1% OR hf_code LIKE %?1%", nativeQuery = true)
+		Page<Object[]> findHfBySearch(String searchKeyword, Pageable pageable);
 	
+//		   @Query(value="Select `hf_name` as name , `website` as href, `id` as uuid, `hf_code` as hfCode, `latitude`, `longitude`, `type`, `authlevel`, `level`, `oldlevel`, `ownership`, `ftype`, `opstatus`, `internet`, `ren_date`, `sectioned`, `functional`, `icu_sectioned`, `icu_functional`, `ventilator_sectioned`, `ventilator_functional`, `province`, `district`, `municipality`, `ward`, `estd_date`, `validity`, `email`, `telephone`, `source`, `hmis_code`, `created_at`, `ucode`, `cbscode`, `newcode`, `district_code`, `datecount`, `services`, `soft_delete`, `created_date`, `c_hf_name`, `health_services`, `oxygen`, `ambulance`, `concentrator`, `cylinder`, `ehs`, `geriatrics`, `insurance`, `ocmc`, `pharmacy`, `plant_capacity`, `ssu`, `contact_person`, `contact_person_mobile`, `ambulance_category`, `ambulance_contact`, `hdu_functional`, `hdu_sectioned`, `nicu_functional`, `nicu_sectioned`, `org_source`, `building_cost`, `device_cost`, `est_income`, `loan_org`, `other_source`, `property_source`, `workforce_cost`, `deviceitems`, `owneritems`, `onlinestatus`, `approvedate`, `approveby`, `building_maps`, `hf_details`, `iee_certs`, `mem_citizenships`, `org_articles`, `org_perms`, `reg_orgs`, `service_fees`, `tax_clears`, `vat_pans`, `submitto`, `hcode`, `rtype` from `hfregistry` WHERE hf_code=?")
+//		   List<HealthFacility> getHfByHfCode();
+//		   
 //	@Query(value="update users set password=?3 where username=?1 OR password=?2",nativeQuery=true)
 //	String upDatePw(String username, String oldpass, String newpass);
 
@@ -885,6 +1093,5 @@ public interface HealthFacilityRepo extends PagingAndSortingRepository<HealthFac
 	
 	
 	//	  Page<HealthFacility> findAllInPagination(Pageable pageable);
-	
 	
 }

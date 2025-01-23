@@ -125,6 +125,7 @@ public class HealthFacilityRegistryRestController {
 	
 	@Autowired
 	ApilogService apilogservice;
+	
 	@Autowired
 	ApiExchangeRepo apiexchangeRepo;
 	
@@ -2163,7 +2164,7 @@ return ResponseEntity.ok(list);
 	}
 	
 	@RequestMapping("/gethfbycode")
-	public ResponseEntity<List<Map<String, Object>>> gethfbycode(@RequestParam(name = "hfcode",defaultValue = "500") String hfcode) {
+	public ResponseEntity<List<Map<String, Object>>> gethfbycode(@RequestParam(name = "hfcode", defaultValue = "500") String hfcode) {
 		String sql = "select id,hf_name from hfregistry where CAST(hf_code AS CHAR)=?";
 		List<Tuple> admlvl = db.getResultList(sql, Arrays.asList(hfcode));
 		List<Map<String, Object>> list = new ArrayList<>();

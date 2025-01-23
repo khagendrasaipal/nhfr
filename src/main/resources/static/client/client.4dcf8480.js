@@ -1,1 +1,0 @@
-import"./index.e5c655c7.js";import"./create.15ee5e82.js";import"./index.72429f81.js";import{s as e}from"./app.9f03f2d8.js";import"./js.cookie.a0f74474.js";import"./jquery.84830057.js";import"./fetchdata.bfbfeae9.js";e({target:document.querySelector("#sapper")});
