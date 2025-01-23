@@ -15,11 +15,11 @@ public interface HealthFacilityLevelRepo extends JpaRepository<HealthFacilityLev
 	List<HealthFacilityLevel> findByType(int id);
 
 //	@Query("FROM HealthFacilityLevel WHERE name LIKE %?1% OR code LIKE %?1%")
-	@Query(value="select *,nameen as nameen from facility_level where name LIKE %?1% OR code LIKE %?1%",nativeQuery=true)
+	@Query(value="select *,nameen as nameen from facility_level where name LIKE concat('%',?1,'%') OR code LIKE concat('%',?1,'%')",nativeQuery=true)
 	List<HealthFacilityLevel> findAllList(String search);
 	
 //	@Query("FROM HealthFacilityLevel WHERE status=1 and( name LIKE %?1% OR code LIKE %?1%)")
-	@Query(value="select *,nameen as nameen from facility_level where status=1 and ( name LIKE %?1% OR code LIKE %?1%)",nativeQuery=true)
+	@Query(value="select *,nameen as nameen from facility_level where status=1 and ( name LIKE concat('%',?1,'%') OR code LIKE concat('%',?1,'%'))",nativeQuery=true)
 	List<HealthFacilityLevel> findAllLists(String search);
 
 }

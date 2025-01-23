@@ -17,7 +17,7 @@ public interface ApiUsersRepo extends JpaRepository<ApiSignUpUsersEntity, Intege
 
 	List<ApiSignUpUsersEntity> findByUsername(@Param(value = "username") String username);
 
-	@Query(value="SELECT * from apiusers where fullname LIKE %?1%",nativeQuery=true)
+	@Query(value="SELECT * from apiusers where fullname LIKE  concat('%',?1,'%')",nativeQuery=true)
 	List<ApiSignUpUsersEntity> getAllApiUsers(String search);
 
 //	@Modifying(clearAutomatically = true) @Transactional

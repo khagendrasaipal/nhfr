@@ -16,7 +16,7 @@ public interface HealthServiceRepo extends JpaRepository<HealthServices, Integer
 	List<HealthServices> findAllList(String search);
 	
 //	@Query("FROM HealthServices WHERE status=1 and (name LIKE %?1% OR code LIKE %?1%)")
-	@Query(value="select id,name,code,status,id as value,name as text from health_service where status=1 and  name LIKE %?1% ",nativeQuery=true)
+	@Query(value="select id,name,code,status,id as value,name as text from health_service where status=1 and  name LIKE concat('%',?1,'%') ",nativeQuery=true)
 	List<HealthServices> findAllLists(String search);
 
 }

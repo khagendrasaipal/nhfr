@@ -14,7 +14,7 @@ import com.saipal.Health_Facility_Registry.entity.HealthFacility;
 @Repository
 public interface ApilogRepo extends JpaRepository<ApiLog, Integer> {
 
-	@Query(value="SELECT * from apilog where action LIKE %?1%",nativeQuery=true)
+	@Query(value="SELECT * from apilog where action LIKE concat('%',?1,'%')",nativeQuery=true)
 	List<ApiLog> getAllApiLogs(String search);
 //	
 //	@Query(value="select * FROM apilog WHERE action = ?1",countQuery = "SELECT count(*) FROM apilog",nativeQuery=true)
