@@ -636,7 +636,7 @@ public class ApiController {
 			}
 		}
 		mapadmlvl.put("Status", " 200 OK");
-		mapadmlvl.put("Location", String.format("http://nhfr.mohp.gov.np/api/v1/updateHf/%s.json", id));
+		mapadmlvl.put("Location", String.format("http://182.93.95.238:8084/api/v1/updateHf/%s.json", id));
 
 		list.add(mapadmlvl);
 
