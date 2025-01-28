@@ -883,7 +883,7 @@ public interface HealthFacilityRepo extends PagingAndSortingRepository<HealthFac
 //				+ " reg_orgs ,  service_fees ,  tax_clears ,  vat_pans ,  submitto ,  hcode ,  rtype  from  hfregistry join admin_province p on p.pid=hfregistry.province",countQuery = "SELECT count(*) FROM hfregistry" , nativeQuery = true)
 //		
 		   @Query(value = 
-				   "SELECT hf.hf_name AS name, hf.website AS href, hf.id AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
+				   "SELECT hf.hf_name AS name, hf.website AS href, hf.uuid AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
 				   + " DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS created_at,DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS updated_at, hf.latitude, hf.longitude, hf.hmis_code AS iid, hf.source AS agency, hf.hf_code AS hfCode,hf.type, "
 				    + "health_facility_type.id AS hftype_id, health_facility_type.code AS hftype_code, health_facility_type.type_name AS hftype_name, "
 				    + "  hf.authlevel,"
@@ -915,7 +915,7 @@ public interface HealthFacilityRepo extends PagingAndSortingRepository<HealthFac
 		Page<Object[]> findallFacilities(Pageable pageable);
 		
 		 @Query(value = 
-				   "SELECT hf.hf_name AS name, hf.website AS href, hf.id AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
+				   "SELECT hf.hf_name AS name, hf.website AS href, hf.uuid AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
 				   + " DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS created_at,DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS updated_at, hf.latitude, hf.longitude, hf.hmis_code AS iid, hf.source AS agency, hf.hf_code AS hfCode,hf.type, "
 				    + "health_facility_type.id AS hftype_id, health_facility_type.code AS hftype_code, health_facility_type.type_name AS hftype_name, "
 				    + "  hf.authlevel,"
@@ -947,7 +947,7 @@ public interface HealthFacilityRepo extends PagingAndSortingRepository<HealthFac
 		Page<Object[]> findHfByCodes(BigInteger code,Pageable pageable);
 
 		 @Query(value = 
-				   "SELECT hf.hf_name AS name, hf.website AS href, hf.id AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
+				   "SELECT hf.hf_name AS name, hf.website AS href, hf.uuid AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
 				   + " DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS created_at,DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS updated_at, hf.latitude, hf.longitude, hf.hmis_code AS iid, hf.source AS agency, hf.hf_code AS hfCode,hf.type, "
 				    + "health_facility_type.id AS hftype_id, health_facility_type.code AS hftype_code, health_facility_type.type_name AS hftype_name, "
 				    + "  hf.authlevel,"
@@ -980,7 +980,7 @@ public interface HealthFacilityRepo extends PagingAndSortingRepository<HealthFac
 		
 		
 		 @Query(value = 
-				   "SELECT hf.hf_name AS name, hf.website AS href, hf.id AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
+				   "SELECT hf.hf_name AS name, hf.website AS href, hf.uuid AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
 				   + " DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS created_at,DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS updated_at, hf.latitude, hf.longitude, hf.hmis_code AS iid, hf.source AS agency, hf.hf_code AS hfCode,hf.type, "
 				    + "health_facility_type.id AS hftype_id, health_facility_type.code AS hftype_code, health_facility_type.type_name AS hftype_name, "
 				    + "  hf.authlevel,"
@@ -1012,7 +1012,7 @@ public interface HealthFacilityRepo extends PagingAndSortingRepository<HealthFac
 		 Page<Object[]> findHfByDistrict(int district, Pageable pageable);
 		
 		 @Query(value = 
-				   "SELECT hf.hf_name AS name, hf.website AS href, hf.id AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
+				   "SELECT hf.hf_name AS name, hf.website AS href, hf.uuid AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
 				   + " DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS created_at,DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS updated_at, hf.latitude, hf.longitude, hf.hmis_code AS iid, hf.source AS agency, hf.hf_code AS hfCode,hf.type, "
 				    + "health_facility_type.id AS hftype_id, health_facility_type.code AS hftype_code, health_facility_type.type_name AS hftype_name, "
 				    + "  hf.authlevel,"
@@ -1044,7 +1044,7 @@ public interface HealthFacilityRepo extends PagingAndSortingRepository<HealthFac
 		Page<Object[]> findHfByPalika(String municipality, Pageable pageable);
 		
 		 @Query(value = 
-				   "SELECT hf.hf_name AS name, hf.website AS href, hf.id AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
+				   "SELECT hf.hf_name AS name, hf.website AS href, hf.uuid AS uuid,CASE WHEN hf.opstatus = 'Functional' THEN 'true'ELSE 'false'END AS active,"
 				   + " DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS created_at,DATE_FORMAT(hf.created_at, '%Y-%m-%d') AS updated_at, hf.latitude, hf.longitude, hf.hmis_code AS iid, hf.source AS agency, hf.hf_code AS hfCode,hf.type, "
 				    + "health_facility_type.id AS hftype_id, health_facility_type.code AS hftype_code, health_facility_type.type_name AS hftype_name, "
 				    + "  hf.authlevel,"

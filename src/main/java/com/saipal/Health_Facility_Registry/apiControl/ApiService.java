@@ -13,13 +13,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.saipal.Health_Facility_Registry.entity.ApiLog;
 import com.saipal.Health_Facility_Registry.entity.HealthFacility;
 import com.saipal.Health_Facility_Registry.repository.HealthFacilityRepo;
 import com.saipal.Health_Facility_Registry.service.ApilogService;
+import com.saipal.Health_Facility_Registry.service.HealthFacilityService;
 import com.saipal.Health_Facility_Registry.util.DB;
 import com.saipal.Health_Facility_Registry.util.Messenger;
 
@@ -1033,6 +1040,41 @@ public class ApiService {
 		return messages;
 	}
 
+
+	public List<Map<String, Object>> addFacilityType(HealthFacility healthFacility, String token) {
+		
+		List<Map<String, Object>> messages = new ArrayList<Map<String, Object>>();
+		Map<String, Object> message = new HashMap<String, Object>();
+		System.out.println("here i am ");
+		
+		String tuser = healthFacilityRepo.findApiuser(token);
+		System.out.println("user : " + tuser);
+		Integer aid = healthFacilityRepo.findApiUserid(token);
+		if ("1".equals(tuser)) {
+			ApiLog a = new ApiLog();
+			a.setUserid(aid);
+			a.setAction("fetch"); 
+			a.setUrl("api/v1/createHf");
+			healthFacilityRepo.save(healthFacility);
+			message.put("facility",  healthFacility);
+		}else {
+		message.put("status", 401);
+		message.put("message", "Unauthorized");
+		messages.add(message);
+		
+	}	
+		messages.add(message);
+		
+		return messages;
+	
+	}
+	
+	public HealthFacility get(int id) {
+		return healthFacilityRepo.findById(id).get();
+	}
 	
 
+	public void delete(int id) {
+		healthFacilityRepo.softDelete(id);
+	}
 }
